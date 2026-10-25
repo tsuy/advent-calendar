@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Pre-Christmas Story – The Unforgettable Journey Through Notugre 🎄✨</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;600;700&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        festive: {
+                            red: '#8B0000',
+                            crimson: '#D42426',
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB',
+                            green: '#0B3B17',
+                            darkGreen: '#051E0B',
+                            night: '#0a1118',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cinzel Decorative"', 'serif'],
+                        festive: ['"Mountains of Christmas"', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Canvas Snowfall Particles Styling */
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* 3D Flip Card Effects for Doors */
+        .door-container {
+            perspective: 1000px;
+        }
+        
+        .door-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .door-container.open .door-inner {
+            transform: rotateY(-140deg);
+        }
+
+        .door-front, .door-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 0.75rem;
+        }
+
+        .door-front {
+            z-index: 2;
+        }
+
+        .door-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+        }
+
+        /* Shimmering Golden Text Effect */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .gold-shimmer {
+            background: linear-gradient(90deg, #D4AF37 0%, #FFF8DC 50%, #D4AF37 100%);
+            background-size: 200% 100%;
+            animation: shimmer 4s infinite linear;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar for Modal Text Container */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-festive-night text-slate-100 min-h-screen font-sans relative overflow-x-hidden selection:bg-festive-gold selection:text-black">
+
+    <!-- Snowfall Canvas Particle Overlay -->
+    <canvas id="snow-canvas"></canvas>
+
+    <!-- Application Shell -->
+    <div class="max-w-7xl mx-auto px-4 py-8 relative z-20 flex flex-col min-h-screen">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-8 relative">
+            <!-- Test Mode Toggle (Top Right) -->
+            <div class="relative z-30 sm:absolute sm:right-0 sm:top-0 mb-4 sm:mb-0 inline-flex items-center bg-emerald-950/80 border border-festive-gold/30 rounded-full px-4 py-2 backdrop-blur-md shadow-lg">
+                <label for="testModeToggle" class="text-xs sm:text-sm text-amber-200/90 font-medium cursor-pointer mr-3 select-none flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-festive-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Test Mode (Unlock All)
+                </label>
+                <input type="checkbox" id="testModeToggle" class="w-5 h-5 accent-festive-gold cursor-pointer rounded">
+            </div>
+
+            <h1 class="font-festive text-4xl sm:text-6xl gold-shimmer font-bold mb-2 tracking-wide drop-shadow-md">
+                A Pre-Christmas Story
+            </h1>
+            <p class="font-serif text-lg sm:text-xl text-amber-100/80 italic max-w-2xl mx-auto">
+                The Unforgettable Journey Through Jwala & Dopotta
+            </p>
+            
+            <!-- Progress Counter & Reset -->
+            <div class="mt-4 flex items-center justify-center gap-4 text-xs sm:text-sm text-slate-300">
+                <span id="progressText" class="bg-festive-green/50 border border-emerald-500/30 px-3 py-1 rounded-full">
+                    Doors Unlocked: 0 / 24
+                </span>
+                <button id="resetProgressBtn" class="hover:text-amber-300 underline transition-colors cursor-pointer">
+                    Reset Progress
+                </button>
+            </div>
+        </header>
+
+        <!-- Calendar Doors Grid -->
+        <main class="flex-grow">
+            <div id="calendarGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Doors are dynamically populated by JS -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-xs text-slate-500 py-4 border-t border-slate-800">
+            A Magical Fantasy Advent Experience &bull; December 1st to 24th
+        </footer>
+    </div>
+
+    <!-- Story Modal Viewer -->
+    <div id="storyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modalCard" class="bg-slate-900 border border-festive-gold/40 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
+            
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 bg-gradient-to-r from-festive-darkGreen via-festive-green to-festive-darkGreen border-b border-festive-gold/30 flex justify-between items-center relative">
+                <div class="flex items-center gap-3">
+                    <span id="modalDayBadge" class="w-10 h-10 rounded-full bg-festive-gold text-slate-950 font-bold font-serif text-xl flex items-center justify-center shadow-md shrink-0">
+                        1
+                    </span>
+                    <div>
+                        <h3 id="modalTitle" class="font-serif text-lg sm:text-xl font-bold text-amber-100 leading-tight">Chapter Title</h3>
+                        <p id="modalLocation" class="text-xs text-amber-300/80 font-mono">Location, Jwala & Dopotta</p>
+                    </div>
+                </div>
+                <button id="closeModalBtn" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none cursor-pointer" aria-label="Close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Modal Content (Image & Story Scrollable) -->
+            <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-grow space-y-4">
+                <!-- Image Box -->
+                <div class="rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner">
+                    <img id="modalImage" src="" alt="Notugre Chapter Illustration" class="block mx-auto w-auto max-w-full h-auto max-h-[60vh] object-contain">
+                    <div id="modalImageCaption" class="border-t border-slate-800 p-3 text-xs text-amber-200/90 italic">
+                        Photo Caption
+                    </div>
+                </div>
+
+                <!-- Story Text -->
+                <div class="prose prose-invert max-w-none">
+                    <p id="modalStory" class="text-slate-200 leading-relaxed text-sm sm:text-base font-light whitespace-pre-line">
+                        Story text goes here...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Footer (Navigation & Actions) -->
+            <div class="p-4 bg-slate-950 border-t border-slate-800/80 flex justify-between items-center">
+                <div class="flex gap-2">
+                    <button id="prevDoorBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-200 text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer">
+                        ← Prev
+                    </button>
+                    <button id="nextDoorBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-200 text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer">
+                        Next →
+                    </button>
+                </div>
+                <button id="modalOkBtn" class="px-5 py-2 rounded-lg bg-festive-gold hover:bg-amber-400 text-slate-950 text-xs sm:text-sm font-semibold transition-colors shadow-lg cursor-pointer">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Locked Warning Dialog -->
+    <div id="lockedModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-slate-900 border border-red-500/40 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl transform scale-95 transition-transform duration-200">
+            <div class="w-16 h-16 bg-red-950/80 border border-red-500/50 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                🔒
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-red-200 mb-2">Patience, Traveler!</h3>
+            <p id="lockedModalMessage" class="text-slate-300 text-sm mb-6">
+                This door remains sealed until its December date arrives in Notugre.
+            </p>
+            <button id="closeLockedBtn" class="px-6 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-medium transition-colors shadow-lg cursor-pointer">
+                Understood
+            </button>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC -->
+    <script>
+        /**
+         * 🌟 ADVENT STORY DATA: "The Unforgettable Journey Through Notugre" (24 Chapters)
+         */
+        const adventData = [
+            {
+                day: 1,
+                title: "Boarding the Sky-Chariot!",
+                location: "Limpopo Airfield – Gateway to the Wilds",
+                image: "photos/1.jpeg",
+                photoCaption: "",
+                storyText: "The grand quest of the 16 Guild Members begins! Armed with an ancient clue passed down through the Fothergill family, our brave alliance gathers under the golden sun. Today, we step aboard the twin-engine Sky-Chariot to soar deep into the untamed wilderness. Inside the cabin, eyes sparkle with excitement: we are on a mission to find the legendary wise Leopard and unlock his secret treasure! Propellers roar, wings catch the wind, and our magical journey takes flight!"
+            },
+            {
+                day: 2,
+                title: "The Legend of the Wise Leopard",
+                location: "Limpopo Trails – Journey to the First Lodge",
+                image: "photos/2.jpeg",
+                photoCaption: "",
+                storyText: "Touchdown in the wild! As the Sky-Chariot lands, a mighty Land Cruiser awaits to forge through dust and river crossings. As we roll toward the first of three lodges on our journey, the secret of the map is finally revealed: deep within these lands dwells a wise Leopard who guards a legendary treasure. Filled with excitement, all 16 travellers wonder: will we be able to find him and unlock his secret? The great safari quest is officially under way!"
+            },
+            {
+                day: 3,
+                title: "Flames, Spirits, and the Sacred Summoning Dance",
+                location: "Campfire Circle – First Wilderness Lodge",
+                image: "photos/3.jpeg",
+                photoCaption: "",
+                storyText: "Night falls over the savanna, wrapping the camp in a blanket of starlight. Gathered around the crackling fire, the 16 Guild Members huddle close, studying maps and plotting their next move in search of the wise Leopard. Suddenly, spark and magic fill the air! The younger heroes take center stage, performing an energetic, mystic ritual dance around the flames to summon the legendary predator’s spirit. Laughter and cheer echo into the dark wilderness—the bond of our four families grows stronger under the night sky!"
+            },
+            {
+                day: 4,
+                title: "The Starfall Lake",
+                location: "Central Basin",
+                image: "photos/4.jpeg",
+                photoCaption: "Reflections of shooting stars across the frozen mirror water",
+                storyText: "We reached Starfall Lake just as night fell completely. The surface was frozen into a sheet of crystal clear glass. Below the ice, bioluminescent flora danced in harmony with the meteor shower above, creating the illusion of walking right in the middle of the night sky."
+            },
+            {
+                day: 5,
+                title: "The Clockwork Clocktower",
+                location: "Gilded Spire Citadel",
+                image: "photos/5.jpeg",
+                photoCaption: "Brass gears turning beneath the moonlight",
+                storyText: "At the heart of the Gilded Spire, the Great Clocktower chimed five times. Every gear in Notugre is fueled by holiday joy and memories. Master Tinkerer Elian showed us how the clock counts down the exact minutes until the Solstice Miracle."
+            },
+            {
+                day: 6,
+                title: "St. Nicholas and the Moon-Reindeer",
+                location: "Summit Meadow",
+                image: "photos/6.jpeg",
+                photoCaption: "Glimpse of velvet antlers silhouetted against the full moon",
+                storyText: "On St. Nicholas Eve, we set camp at Summit Meadow. At midnight, a herd of majestic silver-antlered deer crossed the snowfields. Leaving behind glowing tracks, they bore velvet sacks filled with handwritten wishes for the children of the valley."
+            },
+            {
+                day: 7,
+                title: "The Bridge of Frozen Whispers",
+                location: "Gorge of Echoes",
+                image: "photos/7.jpeg",
+                photoCaption: "Icicle-draped wooden suspension bridge spanning the chasm",
+                storyText: "Crossing the high gorge required total silence. Legend has it that any word spoken on the Bridge of Whispers turns into a small, floating ice crystal that carries your secret to the mountain spirits. We held hands and crossed in quiet wonder."
+            },
+            {
+                day: 8,
+                title: "The Celestial Mapmaker",
+                location: "Observatory Peak",
+                image: "photos/8.jpeg",
+                photoCaption: "Brass telescopes pointed at unfamiliar, sparkling constellations",
+                storyText: "High above the clouds, Astronomer Lyra welcomed us into her dome. She was charting the seasonal alignment of the Winter Constellations over Notugre. She gifted us an enchanted pocket compass whose needle points directly to your heart's fondest holiday wish."
+            },
+            {
+                day: 9,
+                title: "The Emerald Tea Haven",
+                location: "Mossy Hollow",
+                image: "photos/9.jpeg",
+                photoCaption: "Steaming cups of pine-needle tea in a warm log cabin",
+                storyText: "Snow fell heavily outside, but inside Mossy Hollow's cozy teahouse, a crackling log fire kept us warm. We drank cups of spiced spruce tea sweetened with wild mountain honey while listening to old folklore recited by local elders."
+            },
+            {
+                day: 10,
+                title: "The Glacier Caverns",
+                location: "Crystal Depths",
+                image: "photos/10.jpeg",
+                photoCaption: "Walls of sapphire ice echoing with natural chime tones",
+                storyText: "Venture deep into the glacier, and you find a natural ice cathedral. As water droplets hit the stalagmites, harmonic bell tones ring out across the cavern. It felt like standing inside a giant, living music box."
+            },
+            {
+                day: 11,
+                title: "The Solstice Market",
+                location: "Fairground Square",
+                image: "photos/11.jpeg",
+                photoCaption: "Festive wooden stalls adorned with garlands and fairy lights",
+                storyText: "The bustling market of Notugre was alive with laughter, roasted chestnuts, and hand-carved wooden toys. Merchants traded blown-glass ornaments filled with captured starlight. We bought a tiny brass chime to remember the day."
+            },
+            {
+                day: 12,
+                title: "Midway: The Northern Lights Dance",
+                location: "Aurora Plateau",
+                image: "photos/12.jpeg",
+                photoCaption: "Ribbons of vibrant green and violet sweeping across the night",
+                storyText: "We reached the halfway point of our journey. Right at midnight, the skies above Aurora Plateau burst into a symphony of emerald, magenta, and sapphire light. We sat wrapped in wool blankets, speechless under the grand celestial show."
+            },
+            {
+                day: 13,
+                title: "The Library of Lost Tales",
+                location: "Everwood Archives",
+                image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1000&q=80",
+                photoCaption: "Floor-to-ceiling bookshelves lined with leather-bound chronicles",
+                storyText: "Hidden inside an ancient oak tree, this library preserves every winter story ever told. The archivist let us read a chapter from 'The First Snowfall of Notugre', written three centuries ago by candlelight."
+            },
+            {
+                day: 14,
+                title: "The Toymaker’s Sanctuary",
+                location: "Whimsical Workshop",
+                image: "photos/14.jpeg",
+                photoCaption: "Intricate wooden nutcrackers and mechanical carousels",
+                storyText: "Master Finn’s workshop smelled of cedar wood and varnish. Wind-up tin soldiers danced across workbenches while carved wooden reindeer took test flights on miniature ziplines. Craftsmanship here is pure magic."
+            },
+            {
+                day: 15,
+                title: "The Songbirds of Winter",
+                location: "Whispering Pines",
+                image: "photos/15.jpeg",
+                photoCaption: "Red robins resting on snow-laden evergreen boughs",
+                storyText: "Even in the coldest depths of winter, the Crimson Robins of Notugre sing melodious tunes. Leaving grain crumbs on the snow, we were quickly surrounded by dozens of trusting little birds bringing warmth to the forest."
+            },
+            {
+                day: 16,
+                title: "The Frozen Waterfall",
+                location: "Silver Cascades",
+                image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1000&q=80",
+                photoCaption: "A towering cascade suspended in solid, shimmering ice",
+                storyText: "What was once a roaring waterfall had frozen solid into a palace of icicles. Sunlight hit the ice columns, refracting tiny rainbow patterns across the snowdrifts around us."
+            },
+            {
+                day: 17,
+                title: "The Hearth of Hospitality",
+                location: "Wayfarer's Lodge",
+                image: "photos/17.jpeg",
+                photoCaption: "A cozy stone fireplace surrounded by plush armchairs",
+                storyText: "Travelers from every corner of Notugre gathered at Wayfarer's Lodge tonight. Stories were shared, fiddles were played, and stranger turned to friend over bowls of hot cinnamon stew."
+            },
+            {
+                day: 18,
+                title: "The Moonlight Skate",
+                location: "Mirror Pond",
+                image: "photos/18.jpeg",
+                photoCaption: "Skate tracks glinting under hanging paper lanterns",
+                storyText: "Lacing up wooden ice skates, we glided effortlessly across Mirror Pond. The ice was perfectly smooth, and villagers danced in concentric circles to the rhythm of acoustic guitars."
+            },
+            {
+                day: 19,
+                title: "Letters to the Stars",
+                location: "Postmaster's Tower",
+                image: "photos/19.jpeg",
+                photoCaption: "Sealed envelopes stamped with wax seals and glitter dust",
+                storyText: "At the highest tower in Notugre, we wrote down our gratitude and hopes for the coming year. Attached to small paper lanterns, our letters floated gently into the star-filled sky."
+            },
+            {
+                day: 20,
+                title: "The Cinnamon Orchard",
+                location: "Golden Valley",
+                image: "photos/20.jpeg",
+                photoCaption: "Spiced trees draped in frost and glowing amber lanterns",
+                storyText: "We walked through an orchard of rare Bark-Cinnamon trees. Harvesting the bark fills the air with an intoxicating sweet scent that can be smelled three valleys away."
+            },
+            {
+                day: 21,
+                title: "The Dawn of Solstice",
+                location: "Sunstone Peak",
+                image: "photos/21.jpeg",
+                photoCaption: "First rays of sunlight piercing through winter mist",
+                storyText: "Standing on Sunstone Peak, we watched the shortest day give way to the promise of returning light. The sunrise painted the snowfields in shades of soft gold and violet."
+            },
+            {
+                day: 22,
+                title: "The Feast of Gratitude",
+                location: "The Great Hall of Notugre",
+                image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80",
+                photoCaption: "Long wooden tables laden with holiday feasts and candlelight",
+                storyText: "Tonight the entire realm gathered for the Great Feast. Baskets of hot pastries, roasted cider apples, and spiced drinks were passed down long communal tables in celebration of unity."
+            },
+            {
+                day: 23,
+                title: "The Eve of Wonders",
+                location: "The Silent Forest",
+                image: "photos/23.jpeg",
+                photoCaption: "A quiet, peaceful snowscape illuminated by moonlight",
+                storyText: "On Christmas Eve Eve, a quiet hush settled over Notugre. The snow fell in big, slow flakes. As we prepared for the final destination, our hearts felt fuller than ever before."
+            },
+            {
+                day: 24,
+                title: "The Heart of Christmas in Notugre",
+                location: "The Great Solstice Tree",
+                image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1000&q=80",
+                photoCaption: "The towering Grand Fir glowing bright in the center of Notugre",
+                storyText: "At last, we reached the center of Notugre: The Great Solstice Tree, glowing with thousands of shimmering lights. The journey through Notugre taught us that the true magic of Christmas lies not in distant places, but in the love, wonder, and joy we share with one another. Merry Christmas!"
+            }
+        ];
+
+        // Non-sequential arrangement for authentic calendar feel
+        const doorOrder = [
+            12, 5, 19, 2, 17, 9,
+            22, 1, 14, 8, 24, 11,
+            6, 20, 4, 15, 23, 7,
+            18, 3, 10, 21, 13, 16
+        ];
+
+        // State Variables
+        let testMode = false;
+        let openedDoors = JSON.parse(localStorage.getItem('notugre_advent_opened') || '[]');
+        let currentModalDay = 1;
+
+        // DOM Elements
+        const calendarGrid = document.getElementById('calendarGrid');
+        const testModeToggle = document.getElementById('testModeToggle');
+        const progressText = document.getElementById('progressText');
+        const resetProgressBtn = document.getElementById('resetProgressBtn');
+
+        // Modal Elements
+        const storyModal = document.getElementById('storyModal');
+        const modalCard = document.getElementById('modalCard');
+        const modalDayBadge = document.getElementById('modalDayBadge');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalLocation = document.getElementById('modalLocation');
+        const modalImage = document.getElementById('modalImage');
+        const modalImageCaption = document.getElementById('modalImageCaption');
+        const modalStory = document.getElementById('modalStory');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalOkBtn = document.getElementById('modalOkBtn');
+        const prevDoorBtn = document.getElementById('prevDoorBtn');
+        const nextDoorBtn = document.getElementById('nextDoorBtn');
+
+        // Locked Modal Elements
+        const lockedModal = document.getElementById('lockedModal');
+        const lockedModalMessage = document.getElementById('lockedModalMessage');
+        const closeLockedBtn = document.getElementById('closeLockedBtn');
+
+        /**
+         * Initialize Calendar Grid
+         */
+        function initCalendar() {
+            calendarGrid.innerHTML = '';
+            
+            doorOrder.forEach(dayNum => {
+                const data = adventData.find(item => item.day === dayNum);
+                const isOpen = openedDoors.includes(dayNum);
+                
+                const doorElement = document.createElement('div');
+                doorElement.className = `door-container h-36 sm:h-44 cursor-pointer ${isOpen ? 'open' : ''}`;
+                doorElement.dataset.day = dayNum;
+
+                // Alternate background gradients
+                const bgGradients = [
+                    'from-red-950 to-festive-darkGreen',
+                    'from-emerald-950 to-red-950',
+                    'from-amber-950 to-emerald-950',
+                    'from-festive-darkGreen to-slate-900'
+                ];
+                const gradient = bgGradients[dayNum % bgGradients.length];
+
+                doorElement.innerHTML = `
+                    <div class="door-inner">
+                        <!-- FRONT OF DOOR (CLOSED) -->
+                        <div class="door-front bg-gradient-to-br ${gradient} border-2 border-festive-gold/40 shadow-xl flex flex-col items-center justify-between p-3 rounded-xl hover:border-festive-gold transition-colors">
+                            <div class="w-full flex justify-between items-center text-festive-gold/60 text-xs">
+                                <span>❄</span>
+                                <span>★</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="font-serif text-3xl sm:text-4xl font-bold gold-shimmer block drop-shadow-md">
+                                    ${dayNum}
+                                </span>
+                                <span class="text-[10px] text-amber-200/60 uppercase tracking-widest font-serif block mt-1">December</span>
+                            </div>
+                            <div class="w-full flex justify-between items-center text-festive-gold/60 text-xs">
+                                <span>★</span>
+                                <span>❄</span>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF DOOR (OPENED REVEAL) -->
+                        <div class="door-back bg-slate-900 border-2 border-festive-gold rounded-xl overflow-hidden shadow-2xl flex flex-col">
+                            <img src="${data.image}" alt="${data.title}" class="w-full h-2/3 object-cover opacity-85">
+                            <div class="p-2 flex-grow flex items-center justify-center bg-emerald-950/90 text-center">
+                                <span class="text-xs font-serif text-amber-200 font-bold line-clamp-2">${data.title}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                doorElement.addEventListener('click', () => handleDoorClick(dayNum));
+                calendarGrid.appendChild(doorElement);
+            });
+
+            updateProgress();
+        }
+
+        /**
+         * Check if door can be opened based on date and test mode
+         */
+        function canOpenDoor(dayNum) {
+            if (testMode) return true;
+
+            const now = new Date();
+            const currentMonth = now.getMonth(); // 11 = December
+            const currentDate = now.getDate();
+
+            // If December, allow up to current day
+            if (currentMonth === 11) {
+                return dayNum <= currentDate;
+            }
+            
+            // If before December in current year, restrict
+            if (currentMonth < 11) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * Handle Door Click
+         */
+        function handleDoorClick(dayNum) {
+            if (canOpenDoor(dayNum)) {
+                openDoorAndShowModal(dayNum);
+            } else {
+                showLockedModal(dayNum);
+            }
+        }
+
+        /**
+         * Open Door & Show Modal
+         */
+        function openDoorAndShowModal(dayNum) {
+            const data = adventData.find(item => item.day === dayNum);
+            currentModalDay = dayNum;
+
+            if (!openedDoors.includes(dayNum)) {
+                openedDoors.push(dayNum);
+                localStorage.setItem('notugre_advent_opened', JSON.stringify(openedDoors));
+                
+                const doorEl = document.querySelector(`.door-container[data-day="${dayNum}"]`);
+                if (doorEl) doorEl.classList.add('open');
+                
+                updateProgress();
+            }
+
+            setTimeout(() => {
+                showStoryModal(data);
+            }, 250);
+        }
+
+        /**
+         * Populate & Display Story Modal
+         */
+        function showStoryModal(data) {
+            modalDayBadge.textContent = data.day;
+            modalTitle.textContent = data.title;
+            modalLocation.textContent = data.location;
+            modalImage.src = data.image;
+            modalImageCaption.textContent = data.photoCaption || `Chapter ${data.day} Illustration`;
+            modalStory.textContent = data.storyText;
+
+            // Nav buttons update
+            prevDoorBtn.disabled = data.day <= 1;
+            nextDoorBtn.disabled = data.day >= 24;
+            prevDoorBtn.style.opacity = data.day <= 1 ? "0.4" : "1";
+            nextDoorBtn.style.opacity = data.day >= 24 ? "0.4" : "1";
+
+            storyModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-95');
+            modalCard.classList.add('scale-100');
+        }
+
+        /**
+         * Hide Story Modal
+         */
+        function hideStoryModal() {
+            storyModal.classList.add('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-95');
+        }
+
+        /**
+         * Show Locked Door Dialog
+         */
+        function showLockedModal(dayNum) {
+            lockedModalMessage.textContent = `Door ${dayNum} stays locked until December ${dayNum}. Return to Notugre on that day! 🎄`;
+            lockedModal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        /**
+         * Hide Locked Dialog
+         */
+        function hideLockedModal() {
+            lockedModal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        /**
+         * Update Counter
+         */
+        function updateProgress() {
+            progressText.textContent = `Doors Unlocked: ${openedDoors.length} / 24`;
+        }
+
+        // Modal Navigation Handlers
+        prevDoorBtn.addEventListener('click', () => {
+            if (currentModalDay > 1) {
+                const prevDay = currentModalDay - 1;
+                if (canOpenDoor(prevDay)) {
+                    openDoorAndShowModal(prevDay);
+                } else {
+                    showLockedModal(prevDay);
+                }
+            }
+        });
+
+        nextDoorBtn.addEventListener('click', () => {
+            if (currentModalDay < 24) {
+                const nextDay = currentModalDay + 1;
+                if (canOpenDoor(nextDay)) {
+                    openDoorAndShowModal(nextDay);
+                } else {
+                    showLockedModal(nextDay);
+                }
+            }
+        });
+
+        // Event Listeners for UI
+        closeModalBtn.addEventListener('click', hideStoryModal);
+        modalOkBtn.addEventListener('click', hideStoryModal);
+        storyModal.addEventListener('click', (e) => {
+            if (e.target === storyModal) hideStoryModal();
+        });
+
+        closeLockedBtn.addEventListener('click', hideLockedModal);
+        lockedModal.addEventListener('click', (e) => {
+            if (e.target === lockedModal) hideLockedModal();
+        });
+
+        testModeToggle.addEventListener('change', (e) => {
+            testMode = e.target.checked;
+        });
+
+        resetProgressBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset your journey? All opened doors will be sealed again.')) {
+                openedDoors = [];
+                localStorage.removeItem('notugre_advent_opened');
+                document.querySelectorAll('.door-container').forEach(el => el.classList.remove('open'));
+                updateProgress();
+            }
+        });
+
+        /**
+         * ❄️ Canvas Particle Snow Animation
+         */
+        function initSnow() {
+            const canvas = document.getElementById('snow-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            const numFlakes = 65;
+            const flakes = [];
+
+            for (let i = 0; i < numFlakes; i++) {
+                flakes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 3 + 1,
+                    speedY: Math.random() * 0.8 + 0.4,
+                    speedX: Math.random() * 0.4 - 0.2,
+                    opacity: Math.random() * 0.7 + 0.3
+                });
+            }
+
+            function drawFlakes() {
+                ctx.clearRect(0, 0, width, height);
+
+                flakes.forEach(flake => {
+                    ctx.beginPath();
+                    ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+                    ctx.fill();
+
+                    flake.y += flake.speedY;
+                    flake.x += flake.speedX;
+
+                    if (flake.y > height) {
+                        flake.y = -5;
+                        flake.x = Math.random() * width;
+                    }
+                    if (flake.x > width) flake.x = 0;
+                    if (flake.x < 0) flake.x = width;
+                });
+
+                requestAnimationFrame(drawFlakes);
+            }
+
+            window.addEventListener('resize', () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            });
+
+            drawFlakes();
+        }
+
+        // DOM Loaded Init
+        window.addEventListener('DOMContentLoaded', () => {
+            initCalendar();
+            initSnow();
+        });
+    </script>
+</body>
+</html>
