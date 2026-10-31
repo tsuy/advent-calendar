@@ -81,6 +81,137 @@
             z-index: 1;
         }
 
+        /* Door 6 Stunt: falling door, rescue rope & speech bubble */
+        .door-stunt {
+            position: fixed;
+            margin: 0;
+            z-index: 40;
+            pointer-events: none;
+        }
+
+        .rescue-rope {
+            position: fixed;
+            top: 0;
+            width: 5px;
+            height: 0;
+            margin-left: -2.5px;
+            z-index: 41;
+            pointer-events: none;
+            border-radius: 2px;
+            background: repeating-linear-gradient(45deg, #7a4a1f 0 4px, #c8a06a 4px 8px);
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .rescue-rope::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -16px;
+            width: 16px;
+            height: 18px;
+            transform: translateX(-30%);
+            border: 4px solid #cbd5e1;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .speech-bubble {
+            position: fixed;
+            z-index: 45;
+            pointer-events: none;
+            white-space: nowrap;
+            padding: 0.5rem 1.1rem;
+            border-radius: 1.25rem;
+            border: 3px solid #D4AF37;
+            background: #fff;
+            color: #8B0000;
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 1.75rem;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            border: 12px solid transparent;
+            border-top-color: #fff;
+        }
+
+        .speech-bubble.below::after {
+            top: auto;
+            bottom: 100%;
+            border-top-color: transparent;
+            border-bottom-color: #fff;
+        }
+
+        /* Thought bubble: cloud with two little trailing circles instead of a tail */
+        .speech-bubble.thought {
+            border-radius: 2.5rem;
+            color: #334155;
+        }
+
+        .speech-bubble.thought::before,
+        .speech-bubble.thought::after {
+            content: '';
+            position: absolute;
+            transform: none;
+            border: 3px solid #D4AF37;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .speech-bubble.thought::after {
+            width: 16px;
+            height: 16px;
+            left: 46%;
+            top: calc(100% + 4px);
+        }
+
+        .speech-bubble.thought::before {
+            width: 9px;
+            height: 9px;
+            left: 42%;
+            top: calc(100% + 22px);
+        }
+
+        .speech-bubble.thought.below::after {
+            top: auto;
+            bottom: calc(100% + 4px);
+        }
+
+        .speech-bubble.thought.below::before {
+            top: auto;
+            bottom: calc(100% + 22px);
+        }
+
+        /* Door 13 Stunt: oiling angel */
+        .oil-angel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 45;
+            pointer-events: none;
+            font-size: 3rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 10px rgba(255, 248, 220, 0.8));
+        }
+
+        .angel-star {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 44;
+            pointer-events: none;
+            line-height: 1;
+            color: #FDE68A;
+            text-shadow: 0 0 6px #FBBF24, 0 0 12px rgba(251, 191, 36, 0.8);
+        }
+
         /* Shimmering Golden Text Effect */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -182,8 +313,16 @@
             <!-- Modal Content (Image & Story Scrollable) -->
             <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-grow space-y-4">
                 <!-- Image Box -->
-                <div class="rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner">
+                <div class="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner">
                     <img id="modalImage" src="" alt="Notugre Chapter Illustration" class="block mx-auto w-auto max-w-full h-auto max-h-[60vh] object-contain">
+                    <!-- "Wrong picture" notice (door 20 gag) -->
+                    <div id="modalImageNotice" class="hidden absolute inset-x-0 top-1/3 flex justify-center pointer-events-none">
+                        <span class="px-5 py-3 rounded-xl bg-red-700/95 border-2 border-festive-gold text-white font-festive text-2xl sm:text-3xl font-bold shadow-2xl -rotate-3">
+                            😱 Oh no, wrong picture!
+                        </span>
+                    </div>
+                    <!-- Thought bubble over the photo (e.g. door 24) -->
+                    <div id="modalImageThought" class="speech-bubble thought hidden" style="position: absolute; top: 40%; left: 50%; translate: -50% -50%;"></div>
                     <div id="modalImageCaption" class="border-t border-slate-800 p-3 text-xs text-amber-200/90 italic">
                         Photo Caption
                     </div>
@@ -241,7 +380,7 @@
                 day: 1,
                 title: "Boarding the Sky-Chariot!",
                 location: "Limpopo Airfield – Gateway to the Wilds",
-                image: "photos/1.jpeg",
+                image: "photos/1.webp",
                 photoCaption: "Aboard the Beechcraft 1900D",
                 storyText: "The grand quest of the 16 Guild Members begins! Armed with an ancient clue passed down through the Fothergill family, our brave alliance gathers under the golden sun. Today, we step aboard the twin-engine Sky-Chariot to soar deep into the untamed wilderness. Inside the cabin, eyes sparkle with excitement: we are on a mission to find the legendary wise Leopard and unlock his secret treasure! Propellers roar, wings catch the wind, and our magical journey takes flight!"
             },
@@ -249,7 +388,7 @@
                 day: 2,
                 title: "The Legend of the Wise Leopard",
                 location: "Limpopo Trails – Journey to the First Lodge",
-                image: "photos/2.jpeg",
+                image: "photos/2.webp",
                 photoCaption: "The Guild Members in the Toyota Land Cruiser",
                 storyText: "Touchdown in the wild! As the Sky-Chariot lands, a mighty Land Cruiser awaits to forge through dust and river crossings. As we roll toward the first of three lodges on our journey, the secret of the map is finally revealed: deep within these lands dwells a wise Leopard who guards a legendary treasure. Filled with excitement, all 16 travellers wonder: will we be able to find him and unlock his secret? The great safari quest is officially under way!"
             },
@@ -257,7 +396,7 @@
                 day: 3,
                 title: "Flames, Spirits, and the Sacred Summoning Dance",
                 location: "Campfire Circle – First Wilderness Lodge",
-                image: "photos/3.jpeg",
+                image: "photos/3.webp",
                 photoCaption: "Gathered around the fire at Jwala",
                 storyText: "Night falls over the savanna, wrapping the camp in a blanket of starlight. Gathered around the crackling fire, the 16 Guild Members huddle close, studying maps and plotting their next move in search of the wise Leopard. Suddenly, spark and magic fill the air! The younger heroes take center stage, performing an energetic, mystic ritual dance around the flames to summon the legendary predator’s spirit. Laughter and cheer echo into the dark wilderness—the bond of our four families grows stronger under the night sky!"
             },
@@ -265,7 +404,7 @@
                 day: 4,
                 title: "The Great Pepper Prophecy",
                 location: "Lodge Kitchen – Culinary Guild Quarters",
-                image: "photos/4.jpeg",
+                image: "photos/4.webp",
                 photoCaption: "Our kitchen crew getting everything ready",
                 storyText: "To sustain 16 hungry heroes for two full weeks, the Guild had to master the legendary art of self-catering! Unlocking the massive fridge revealed a vibrant sight: a glowing wall of ruby-red and emerald-green peppers. Legend has it that the sweet, pungent incense released when roasting these sacred vegetables generates a magical aroma capable of luring the wise Leopard from miles away! With laughter ringing through the camp, our culinary squad began preparing a feast fit for a grand quest—guaranteed to catch the nose of the wilderness!"
             },
@@ -273,7 +412,7 @@
                 day: 5,
                 title: "Whispers in the Canopy",
                 location: "The Sunlit Savanna & Riverbank Trails",
-                image: "photos/5.jpeg",
+                image: "photos/5.webp",
                 photoCaption: "Red-Headed Weaver, Vervet Monkey, Lizard and Zebras",
                 storyText: "Day three of the grand expedition! Our 16 Guild Members set out across the sun-drenched plains, determined to question the local wildlife. First, we sought wisdom from a fiery Red-Headed Weaver fluttering high in the branches, then approached a shimmering, rainbow-scaled lizard basking on ancient rocks. Even a mischievous Vervet Monkey leaping through the trees and a proud herd of striped Zebras were polled for clues. Alas, each creature shook their head—none knew where the wise Leopard roamed! Undeterred, our heroes push deeper into the unknown, trusting the path ahead."
             },
@@ -281,7 +420,7 @@
                 day: 6,
                 title: "The Distant Silhouette on the Ridge",
                 location: "Harry’s Bar Overlook",
-                image: "photos/6.jpeg",
+                image: "photos/6.webp",
                 photoCaption: "Brotherhood of Lions",
                 storyText: "The next morning, as the sun bathed the valley in warm light, sharp-eyed Urs spotted a mysterious figure lurking on the opposite ridge of Harry's Bar! Gasps echoed through the Guild—could it finally be the wise Leopard? Binoculars were raised and chatter erupted as all 16 heroes tried to identify the majestic creature across the canyon. It turned out to be a regal Lioness! Rushing into our iron chariots, we sped across the riverbed to get a closer look, only to be greeted by her mighty brothers—an awe-inspiring pair of apex lions resting in the golden grass. A breathtaking encounter, even if the search for the Leopard continues!"
             },
@@ -289,7 +428,7 @@
                 day: 7,
                 title: "The Philosophical Owl of the Savanna",
                 location: "Jwala Bush Land",
-                image: "photos/7.jpeg",
+                image: "photos/7.webp",
                 photoCaption: "The Savanna Trio: Giraffe, Owl & Warthog",
                 storyText: "A strange spell of bad luck seemed to hang over the quest! Yet, the 16 Guild Members refused to give up, pushing through the thorny brush to question the tall Giraffes craning their necks above the canopy and the energetic Warthogs trotting through the dust. Neither had seen the Leopard. Then, high in a hollow tree, we spotted the Great Wise Owl! 'Surely, a creature of such renown holds the answers,' we whispered. But alas! The Owl barely batted an eye at our quest, choosing instead to ponder deep, cosmic mysteries of the universe. With a chuckle, our persistent heroes marched onward, undeterred by the philosopher of the woods!"
             },
@@ -297,31 +436,31 @@
                 day: 8,
                 title: "Sunsets of Pure Magic",
                 location: "The Golden Ridges of Tuli",
-                image: "photos/8.jpeg",
+                image: "photos/8.webp",
                 photoCaption: "Recharging under the golden sky",
                 storyText: "Undeterred by eccentric owls or elusive clues, the brave 16 Guild Members pushed onward! As evening approached, the wilderness presented us with a gift beyond measure: golden light pouring over ancient baobabs, painting the sky in fiery shades of amber, violet, and gold. Standing high on the rocky ridges, we recharged our spirits in the breathtaking beauty of the savanna. With awe in our hearts and renewed energy in our souls, our quest continues into the night!"
             },
             {
                 day: 9,
-                title: "The Emerald Tea Haven",
-                location: "Mossy Hollow",
-                image: "photos/9.jpeg",
-                photoCaption: "Steaming cups of pine-needle tea in a warm log cabin",
-                storyText: "Snow fell heavily outside, but inside Mossy Hollow's cozy teahouse, a crackling log fire kept us warm. We drank cups of spiced spruce tea sweetened with wild mountain honey while listening to old folklore recited by local elders."
+                title: "The Sundowner Ritual",
+                location: "Scenic Overlooks",
+                image: "photos/9.webp",
+                photoCaption: "Enjoying an aperitif by the Land Cruiser",
+                storyText: "These savanna sunsets are undeniably magical, but what truly turns them into unforgettable memories is sharing them together! Every single evening, our 16 Guild Members gathered at a brand-new, breathtaking location to celebrate our ancient, sacred tradition: the Sundowner Ritual. Surrounded by stunning wild views, we recharged our adventure-weary spirits with refreshing aperitifs, crunchy chips, fresh crudités, and authentic Biltong."
             },
             {
                 day: 10,
-                title: "The Glacier Caverns",
-                location: "Crystal Depths",
-                image: "photos/10.jpeg",
-                photoCaption: "Walls of sapphire ice echoing with natural chime tones",
-                storyText: "Venture deep into the glacier, and you find a natural ice cathedral. As water droplets hit the stalagmites, harmonic bell tones ring out across the cavern. It felt like standing inside a giant, living music box."
+                title: "A Musical Farewell to Jwala",
+                location: "Jwala Lodge – Farewell Circle",
+                image: "photos/10.webp",
+                photoCaption: "A musical send-off by the lodge team",
+                storyText: "The time has come to say goodbye to our very first sanctuary, Jwala! Though a touch of sadness fills our hearts as we pack our gear, the amazing staff sends the 16 Guild Members off with a heart-warming farewell song. Their beautiful voices echo through the camp, leaving us with radiant smiles and unforgettable memories tucked safely in our hearts. With heavy hearts but bright spirits, our expedition gears up for the next chapter of the grand quest!"
             },
             {
                 day: 11,
                 title: "The Solstice Market",
                 location: "Fairground Square",
-                image: "photos/11.jpeg",
+                image: "photos/11.webp",
                 photoCaption: "Festive wooden stalls adorned with garlands and fairy lights",
                 storyText: "The bustling market of Notugre was alive with laughter, roasted chestnuts, and hand-carved wooden toys. Merchants traded blown-glass ornaments filled with captured starlight. We bought a tiny brass chime to remember the day."
             },
@@ -329,7 +468,7 @@
                 day: 12,
                 title: "Midway: The Northern Lights Dance",
                 location: "Aurora Plateau",
-                image: "photos/12.jpeg",
+                image: "photos/12.webp",
                 photoCaption: "Ribbons of vibrant green and violet sweeping across the night",
                 storyText: "We reached the halfway point of our journey. Right at midnight, the skies above Aurora Plateau burst into a symphony of emerald, magenta, and sapphire light. We sat wrapped in wool blankets, speechless under the grand celestial show."
             },
@@ -337,7 +476,7 @@
                 day: 13,
                 title: "The Library of Lost Tales",
                 location: "Everwood Archives",
-                image: "photos/13.jpeg",
+                image: "photos/13.webp",
                 photoCaption: "Floor-to-ceiling bookshelves lined with leather-bound chronicles",
                 storyText: "Hidden inside an ancient oak tree, this library preserves every winter story ever told. The archivist let us read a chapter from 'The First Snowfall of Notugre', written three centuries ago by candlelight."
             },
@@ -345,7 +484,7 @@
                 day: 14,
                 title: "The Toymaker’s Sanctuary",
                 location: "Whimsical Workshop",
-                image: "photos/14.jpeg",
+                image: "photos/14.webp",
                 photoCaption: "Intricate wooden nutcrackers and mechanical carousels",
                 storyText: "Master Finn’s workshop smelled of cedar wood and varnish. Wind-up tin soldiers danced across workbenches while carved wooden reindeer took test flights on miniature ziplines. Craftsmanship here is pure magic."
             },
@@ -353,7 +492,7 @@
                 day: 15,
                 title: "The Songbirds of Winter",
                 location: "Whispering Pines",
-                image: "photos/15.jpeg",
+                image: "photos/15.webp",
                 photoCaption: "Red robins resting on snow-laden evergreen boughs",
                 storyText: "Even in the coldest depths of winter, the Crimson Robins of Notugre sing melodious tunes. Leaving grain crumbs on the snow, we were quickly surrounded by dozens of trusting little birds bringing warmth to the forest."
             },
@@ -361,7 +500,7 @@
                 day: 16,
                 title: "The Frozen Waterfall",
                 location: "Silver Cascades",
-                image: "photos/16.jpeg",
+                image: "photos/16.webp",
                 photoCaption: "A towering cascade suspended in solid, shimmering ice",
                 storyText: "What was once a roaring waterfall had frozen solid into a palace of icicles. Sunlight hit the ice columns, refracting tiny rainbow patterns across the snowdrifts around us."
             },
@@ -369,7 +508,7 @@
                 day: 17,
                 title: "The Hearth of Hospitality",
                 location: "Wayfarer's Lodge",
-                image: "photos/17.jpeg",
+                image: "photos/17.webp",
                 photoCaption: "A cozy stone fireplace surrounded by plush armchairs",
                 storyText: "Travelers from every corner of Notugre gathered at Wayfarer's Lodge tonight. Stories were shared, fiddles were played, and stranger turned to friend over bowls of hot cinnamon stew."
             },
@@ -377,7 +516,7 @@
                 day: 18,
                 title: "The Moonlight Skate",
                 location: "Mirror Pond",
-                image: "photos/18.jpeg",
+                image: "photos/18.webp",
                 photoCaption: "Skate tracks glinting under hanging paper lanterns",
                 storyText: "Lacing up wooden ice skates, we glided effortlessly across Mirror Pond. The ice was perfectly smooth, and villagers danced in concentric circles to the rhythm of acoustic guitars."
             },
@@ -385,7 +524,7 @@
                 day: 19,
                 title: "Letters to the Stars",
                 location: "Postmaster's Tower",
-                image: "photos/19.jpeg",
+                image: "photos/19.webp",
                 photoCaption: "Sealed envelopes stamped with wax seals and glitter dust",
                 storyText: "At the highest tower in Notugre, we wrote down our gratitude and hopes for the coming year. Attached to small paper lanterns, our letters floated gently into the star-filled sky."
             },
@@ -393,7 +532,8 @@
                 day: 20,
                 title: "The Cinnamon Orchard",
                 location: "Golden Valley",
-                image: "photos/20.jpeg",
+                image: "photos/20.webp",
+                wrongImage: "photos/20b.webp", // shown by mistake the first time the door is opened
                 photoCaption: "Spiced trees draped in frost and glowing amber lanterns",
                 storyText: "We walked through an orchard of rare Bark-Cinnamon trees. Harvesting the bark fills the air with an intoxicating sweet scent that can be smelled three valleys away."
             },
@@ -401,7 +541,7 @@
                 day: 21,
                 title: "The Dawn of Solstice",
                 location: "Sunstone Peak",
-                image: "photos/21.jpeg",
+                image: "photos/21.webp",
                 photoCaption: "First rays of sunlight piercing through winter mist",
                 storyText: "Standing on Sunstone Peak, we watched the shortest day give way to the promise of returning light. The sunrise painted the snowfields in shades of soft gold and violet."
             },
@@ -409,7 +549,7 @@
                 day: 22,
                 title: "The Feast of Gratitude",
                 location: "The Great Hall of Notugre",
-                image: "photos/22.jpeg",
+                image: "photos/22.webp",
                 photoCaption: "Long wooden tables laden with holiday feasts and candlelight",
                 storyText: "Tonight the entire realm gathered for the Great Feast. Baskets of hot pastries, roasted cider apples, and spiced drinks were passed down long communal tables in celebration of unity."
             },
@@ -417,7 +557,7 @@
                 day: 23,
                 title: "The Eve of Wonders",
                 location: "The Silent Forest",
-                image: "photos/23.jpeg",
+                image: "photos/23.webp",
                 photoCaption: "A quiet, peaceful snowscape illuminated by moonlight",
                 storyText: "On Christmas Eve Eve, a quiet hush settled over Notugre. The snow fell in big, slow flakes. As we prepared for the final destination, our hearts felt fuller than ever before."
             },
@@ -425,8 +565,9 @@
                 day: 24,
                 title: "The Heart of Christmas in Notugre",
                 location: "The Great Solstice Tree",
-                image: "photos/24.jpeg",
-                storyText: "For adults only: Die Hyaene lacht: Unter uns, der weise Leopard hat euch ziemlich reingelegt: Im Jahr 2024 hat er den 2'492-karat Diamanten geklaut und in dem Baum versteckt - aber hey, ihr seid ja mit dem schönen märchenhaften Ende glückick und zufrieden. Wer braucht schon diesem Diamanten. Merry Christmas siehe https://edition.cnn.com/2024/08/22/style/diamond-botswana-scli-intl"
+                image: "photos/24.webp",
+                imageThought: "😏 Mwahahaha!", // pops up over the photo after 2 seconds
+                storyText: "For adults only: Die Hyaene lacht: Unter uns, der weise Leopard hat euch ja ziemlich reingelegt: Im Jahr 2024 hat er den 2'492-karat Diamanten geklaut und in dem Baum versteckt - aber hey, ihr seid ja mit dem schönen märchenhaften Ende glückich und zufrieden. Wer braucht schon diesem Diamanten. Merry Christmas siehe https://edition.cnn.com/2024/08/22/style/diamond-botswana-scli-intl"
             }
         ];
 
@@ -462,6 +603,9 @@
         const modalOkBtn = document.getElementById('modalOkBtn');
         const prevDoorBtn = document.getElementById('prevDoorBtn');
         const nextDoorBtn = document.getElementById('nextDoorBtn');
+        const modalImageNotice = document.getElementById('modalImageNotice');
+        const modalImageThought = document.getElementById('modalImageThought');
+        let modalShowCount = 0; // bumped on every showStoryModal, lets delayed gags detect navigation
 
         // Locked Modal Elements
         const lockedModal = document.getElementById('lockedModal');
@@ -555,6 +699,7 @@
          * Handle Door Click
          */
         function handleDoorClick(dayNum) {
+            if (stuntRunning) return;
             if (canOpenDoor(dayNum)) {
                 openDoorAndShowModal(dayNum);
             } else {
@@ -565,33 +710,359 @@
         /**
          * Open Door & Show Modal
          */
-        function openDoorAndShowModal(dayNum) {
+        async function openDoorAndShowModal(dayNum) {
+            if (stuntRunning) return;
             const data = adventData.find(item => item.day === dayNum);
             currentModalDay = dayNum;
+            let modalDelay = 250;
+            const doorEl = document.querySelector(`.door-container[data-day="${dayNum}"]`);
+            const showWrongImage = !openedDoors.includes(dayNum) && Boolean(data.wrongImage);
 
             if (!openedDoors.includes(dayNum)) {
+                if (showWrongImage && doorEl) {
+                    doorEl.querySelector('.door-back img').src = data.wrongImage;
+                }
+
+                const stunt = DOOR_STUNTS[dayNum];
+                if (stunt && doorEl) {
+                    stuntRunning = true;
+                    try {
+                        await prepareStuntStage(doorEl);
+                        await stunt(doorEl);
+                    } finally {
+                        stuntRunning = false;
+                    }
+                    modalDelay = 900; // let the door swing open visibly first
+                }
+
                 openedDoors.push(dayNum);
                 localStorage.setItem('notugre_advent_opened', JSON.stringify(openedDoors));
-                
-                const doorEl = document.querySelector(`.door-container[data-day="${dayNum}"]`);
+
                 if (doorEl) doorEl.classList.add('open');
-                
+
                 updateProgress();
             }
 
             setTimeout(() => {
-                showStoryModal(data);
-            }, 250);
+                if (showWrongImage) {
+                    showStoryModal(data, data.wrongImage);
+                    playWrongPictureGag(data, doorEl);
+                } else {
+                    showStoryModal(data);
+                }
+            }, modalDelay);
+        }
+
+        /**
+         * 😱 Wrong picture gag (door 20): the first time the door opens a wrong
+         * photo is shown, a few seconds later a notice pops up and the correct
+         * photo replaces it – in the modal and on the door in the overview.
+         */
+        // Returns a check that stays true while the modal still shows the same chapter
+        function modalStillShowing() {
+            const token = modalShowCount;
+            return () => token === modalShowCount && !storyModal.classList.contains('pointer-events-none');
+        }
+
+        /**
+         * 💭 Thought bubble that pops up over the photo and types out its text.
+         */
+        async function showImageThought(text) {
+            const stillShowing = modalStillShowing();
+            await wait(2000);
+            if (!stillShowing()) return;
+
+            modalImageThought.textContent = '';
+            modalImageThought.classList.remove('hidden');
+            modalImageThought.animate([
+                { transform: 'scale(0.2)', opacity: 0 },
+                { transform: 'scale(1.1)', opacity: 1, offset: 0.7 },
+                { transform: 'scale(1)', opacity: 1 }
+            ], { duration: 350, easing: 'ease-out' });
+
+            for (const char of Array.from(text)) {
+                if (!stillShowing()) return;
+                modalImageThought.textContent += char;
+                await wait(90);
+            }
+        }
+
+        async function playWrongPictureGag(data, doorEl) {
+            const stillShowing = modalStillShowing();
+            new Image().src = data.image; // preload so the swap is instant
+
+            const swapImage = async (img) => {
+                await img.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: 'forwards' }).finished;
+                img.src = data.image;
+                await img.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: 'forwards' }).finished;
+            };
+
+            await wait(1000);
+            const doorImg = doorEl && doorEl.querySelector('.door-back img');
+            if (!stillShowing()) {
+                if (doorImg) doorImg.src = data.image;
+                return;
+            }
+
+            modalImageNotice.classList.remove('hidden');
+            modalImageNotice.firstElementChild.animate([
+                { transform: 'scale(0.2) rotate(-3deg)', opacity: 0 },
+                { transform: 'scale(1.15) rotate(-3deg)', opacity: 1, offset: 0.7 },
+                { transform: 'scale(1) rotate(-3deg)', opacity: 1 }
+            ], { duration: 400, easing: 'ease-out' });
+
+            await wait(2000);
+            if (doorImg) swapImage(doorImg);
+            if (!stillShowing()) return;
+
+            modalImageNotice.classList.add('hidden');
+            await swapImage(modalImage).catch(() => {}); // cancelled if the user navigates away
+        }
+
+        /**
+         * 🎬 Door Stunts: special animations that play before certain doors open.
+         */
+        const DOOR_STUNTS = {
+            6: playFallingDoorStunt,
+            13: playJammedDoorStunt,
+        };
+        let stuntRunning = false;
+
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+        // Make sure the door is visible (e.g. when reached via Prev/Next in the modal)
+        async function prepareStuntStage(doorEl) {
+            if (!storyModal.classList.contains('pointer-events-none')) {
+                hideStoryModal();
+                await wait(300);
+            }
+            const rect = doorEl.getBoundingClientRect();
+            if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                doorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                await wait(700);
+            }
+        }
+
+        /**
+         * 🎅 Door 6: the door falls out of the browser, a rope pulls it
+         * back into place, Santa laughs – and only then does it open.
+         */
+        async function playFallingDoorStunt(doorEl) {
+            const rect = doorEl.getBoundingClientRect();
+            const fallDistance = window.innerHeight - rect.top + rect.height;
+            const ropeHome = Math.max(0, rect.top);
+
+            // Stand-in copy of the door that can leave the page
+            const clone = doorEl.cloneNode(true);
+            clone.classList.add('door-stunt');
+            Object.assign(clone.style, {
+                left: `${rect.left}px`,
+                top: `${rect.top}px`,
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
+            });
+            document.body.appendChild(clone);
+            doorEl.style.visibility = 'hidden';
+
+            // 1. The door wobbles, then drops out of the browser
+            await clone.animate([
+                { transform: 'translateY(0) rotate(0deg)' },
+                { transform: 'translateY(-14px) rotate(-5deg)', offset: 0.18 },
+                { transform: `translateY(${fallDistance}px) rotate(32deg)` }
+            ], { duration: 1200, easing: 'cubic-bezier(0.5, 0, 1, 0.5)', fill: 'forwards' }).finished;
+
+            await wait(600);
+
+            // 2. A rope with a hook comes down from the top
+            const rope = document.createElement('div');
+            rope.className = 'rescue-rope';
+            rope.style.left = `${rect.left + rect.width / 2}px`;
+            document.body.appendChild(rope);
+
+            const ropeLow = ropeHome + fallDistance;
+            await rope.animate(
+                [{ height: '0px' }, { height: `${ropeLow}px` }],
+                { duration: 1000, easing: 'ease-in', fill: 'forwards' }
+            ).finished;
+
+            await wait(300);
+
+            // 3. Rope hauls the door back up, swinging gently from its top edge.
+            // Both animations share timing, so the door stays on the hook.
+            clone.style.transformOrigin = '50% 0';
+            const lift = { duration: 2200, easing: 'cubic-bezier(0.35, 0, 0.25, 1)', fill: 'forwards' };
+            const swing = [7, -6, 4, -2, 0];
+            rope.animate([{ height: `${ropeLow}px` }, { height: `${ropeHome}px` }], lift);
+            await clone.animate(swing.map((deg, i) => {
+                const progress = i / (swing.length - 1);
+                return {
+                    transform: `translateY(${fallDistance * (1 - progress)}px) rotate(${deg}deg)`,
+                    offset: progress
+                };
+            }), lift).finished;
+
+            // Door is back in place – swap the stand-in for the real door
+            doorEl.style.visibility = '';
+            clone.remove();
+
+            // 4. Rope disappears upwards
+            await rope.animate(
+                [{ height: `${ropeHome}px` }, { height: '0px' }],
+                { duration: 600, easing: 'ease-in', fill: 'forwards' }
+            ).finished;
+            rope.remove();
+
+            // 5. Speech bubble: Ho ho ho ho…
+            await showBubble(doorEl, '🎅', [' Ho', ' ho', ' ho', ' ho…']);
+        }
+
+        /**
+         * 👼 Door 13: the door is stuck. A thought bubble says so, a little
+         * angel flies in from the right and sprinkles star dust on the hinge
+         * – then it opens.
+         */
+        async function playJammedDoorStunt(doorEl) {
+            const rect = doorEl.getBoundingClientRect();
+            const doorInner = doorEl.querySelector('.door-inner');
+
+            // 1. The door tries to open but only rattles in place
+            await doorInner.animate([
+                { transform: 'rotateY(0deg)' },
+                { transform: 'rotateY(-14deg)', offset: 0.15 },
+                { transform: 'rotateY(-3deg) translateX(-3px)', offset: 0.25 },
+                { transform: 'rotateY(-9deg) translateX(3px)', offset: 0.35 },
+                { transform: 'rotateY(0deg)', offset: 0.45 },
+                { transform: 'rotateY(-10deg)', offset: 0.6 },
+                { transform: 'rotateY(-2deg) translateX(3px)', offset: 0.7 },
+                { transform: 'rotateY(-6deg) translateX(-3px)', offset: 0.8 },
+                { transform: 'rotateY(0deg)' }
+            ], { duration: 1400, easing: 'ease-in-out' }).finished;
+
+            // 2. Thought bubble
+            await showBubble(doorEl, '🤔', [' It’s', ' stuck!'], 'thought');
+
+            // 3. A little angel flies in from the right towards the hinge
+            const angel = document.createElement('div');
+            angel.className = 'oil-angel';
+            angel.textContent = '👼';
+            document.body.appendChild(angel);
+
+            const hoverX = Math.max(4, rect.left - 24);
+            const hoverY = Math.max(10, rect.top - 60);
+            const startX = window.innerWidth + 60;
+            const flightPath = [0, 0.25, 0.5, 0.75, 1].map((p, i) => ({
+                transform: `translate(${startX + (hoverX - startX) * p}px, ${hoverY + (i % 2 ? -30 : 0)}px) rotate(${i === 4 ? 0 : -12}deg)`,
+                offset: p
+            }));
+            await angel.animate(flightPath, {
+                duration: 2000, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)', fill: 'forwards'
+            }).finished;
+
+            // 4. Hovering angel sprinkles a shower of little stars down the hinge
+            const hover = angel.animate([
+                { transform: `translate(${hoverX}px, ${hoverY}px)` },
+                { transform: `translate(${hoverX}px, ${hoverY - 8}px)` }
+            ], { duration: 400, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' });
+
+            const starX = hoverX + 24;
+            const starStartY = hoverY + 40;
+            const falling = [];
+            for (let i = 0; i < 14; i++) {
+                const targetY = rect.top + rect.height * (0.1 + Math.random() * 0.8);
+                falling.push(dropStar(starX, starStartY, rect.left + 6, targetY));
+                await wait(110);
+            }
+            await Promise.all(falling);
+
+            await wait(300);
+            hover.cancel();
+
+            // 5. Angel flies off happily, up and away to the right
+            await angel.animate([
+                { transform: `translate(${hoverX}px, ${hoverY}px) rotate(0deg)` },
+                { transform: `translate(${hoverX - 20}px, ${hoverY + 15}px) rotate(10deg)`, offset: 0.15 },
+                { transform: `translate(${window.innerWidth + 80}px, -120px) rotate(-20deg)` }
+            ], { duration: 1400, easing: 'ease-in', fill: 'forwards' }).finished;
+            angel.remove();
+        }
+
+        async function dropStar(fromX, fromY, toX, toY) {
+            const star = document.createElement('div');
+            star.className = 'angel-star';
+            star.textContent = '★';
+            star.style.fontSize = `${0.9 + Math.random() * 0.7}rem`;
+            document.body.appendChild(star);
+
+            // Drift a bit sideways while tumbling down to the hinge
+            const landX = toX + (Math.random() * 16 - 8);
+            const midX = (fromX + landX) / 2 + (Math.random() * 40 - 20);
+            const spin = Math.random() < 0.5 ? -360 : 360;
+            await star.animate([
+                { transform: `translate(${fromX}px, ${fromY}px) translate(-50%, -50%) rotate(0deg) scale(0.3)`, opacity: 0 },
+                { transform: `translate(${midX}px, ${(fromY + toY) / 2}px) translate(-50%, -50%) rotate(${spin / 2}deg) scale(1)`, opacity: 1, offset: 0.5 },
+                { transform: `translate(${landX}px, ${toY}px) translate(-50%, -50%) rotate(${spin}deg) scale(0.8)`, opacity: 1 }
+            ], { duration: 900, easing: 'ease-in', fill: 'forwards' }).finished;
+
+            // Landing: the star bursts into a little sparkle
+            await star.animate([
+                { transform: `translate(${landX}px, ${toY}px) translate(-50%, -50%) scale(0.8)`, opacity: 1 },
+                { transform: `translate(${landX}px, ${toY}px) translate(-50%, -50%) scale(1.8)`, opacity: 0 }
+            ], { duration: 450, easing: 'ease-out', fill: 'forwards' }).finished;
+            star.remove();
+        }
+
+        async function showBubble(doorEl, prefix, words, variant = '') {
+            const rect = doorEl.getBoundingClientRect();
+            const bubble = document.createElement('div');
+            bubble.className = `speech-bubble ${variant}`;
+            bubble.textContent = prefix;
+            document.body.appendChild(bubble);
+
+            const gap = variant === 'thought' ? 34 : 16;
+            const placeBelow = rect.top < 90 + gap;
+            if (placeBelow) bubble.classList.add('below');
+            bubble.style.top = placeBelow ? `${rect.bottom + gap}px` : `${rect.top - gap}px`;
+            bubble.style.transform = placeBelow ? 'translateX(-50%)' : 'translate(-50%, -100%)';
+
+            const keepOnScreen = () => {
+                const half = bubble.offsetWidth / 2;
+                const center = rect.left + rect.width / 2;
+                bubble.style.left = `${Math.min(Math.max(center, half + 8), window.innerWidth - half - 8)}px`;
+            };
+            keepOnScreen();
+
+            await bubble.animate(
+                [{ opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1.1, offset: 0.7 }, { opacity: 1, scale: 1 }],
+                { duration: 350, easing: 'ease-out' }
+            ).finished;
+
+            for (const word of words) {
+                bubble.textContent += word;
+                keepOnScreen();
+                await wait(350);
+            }
+
+            await wait(1200);
+            await bubble.animate(
+                [{ opacity: 1 }, { opacity: 0 }],
+                { duration: 300, fill: 'forwards' }
+            ).finished;
+            bubble.remove();
         }
 
         /**
          * Populate & Display Story Modal
          */
-        function showStoryModal(data) {
+        function showStoryModal(data, imageOverride) {
+            modalShowCount++;
+            modalImageNotice.classList.add('hidden');
+            modalImageThought.classList.add('hidden');
+            modalImage.getAnimations().forEach(a => a.cancel());
+
             modalDayBadge.textContent = data.day;
             modalTitle.textContent = data.title;
             modalLocation.textContent = data.location;
-            modalImage.src = data.image;
+            modalImage.src = imageOverride || data.image;
             modalImageCaption.textContent = data.photoCaption || `Chapter ${data.day} Illustration`;
             modalStory.textContent = data.storyText;
 
@@ -604,6 +1075,8 @@
             storyModal.classList.remove('opacity-0', 'pointer-events-none');
             modalCard.classList.remove('scale-95');
             modalCard.classList.add('scale-100');
+
+            if (data.imageThought) showImageThought(data.imageThought);
         }
 
         /**
