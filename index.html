@@ -283,7 +283,7 @@
 
     <!-- Story Modal Viewer -->
     <div id="storyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="modalCard" class="bg-slate-900 border border-festive-gold/40 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
+        <div id="modalCard" class="bg-slate-900 border border-festive-gold/40 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh] max-h-[90dvh]">
             
             <!-- Modal Header -->
             <div class="p-4 sm:p-5 bg-gradient-to-r from-festive-darkGreen via-festive-green to-festive-darkGreen border-b border-festive-gold/30 flex justify-between items-center relative">
@@ -302,7 +302,7 @@
             </div>
 
             <!-- Modal Content (Image & Story Scrollable) -->
-            <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-grow space-y-4">
+            <div id="modalScroll" class="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-grow space-y-4">
                 <!-- Image Box -->
                 <div class="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner">
                     <img id="modalImage" src="" alt="Chapter Illustration" class="block mx-auto w-auto max-w-full h-auto max-h-[60vh] object-contain">
@@ -324,6 +324,13 @@
                     <p id="modalStory" class="text-slate-200 leading-relaxed text-sm sm:text-base font-light whitespace-pre-line">
                         Story text goes here...
                     </p>
+                </div>
+
+                <!-- Scroll hint: shown while the story text is still below the fold -->
+                <div id="scrollHint" class="sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 pt-10 pb-3 flex justify-center bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent pointer-events-none transition-opacity duration-300 opacity-0">
+                    <button id="scrollHintBtn" class="pointer-events-auto px-4 py-1.5 rounded-full bg-festive-gold text-slate-950 text-xs font-semibold shadow-lg animate-bounce cursor-pointer">
+                        ↓ Read the story
+                    </button>
                 </div>
             </div>
 
@@ -597,6 +604,25 @@
         const nextDoorBtn = document.getElementById('nextDoorBtn');
         const modalImageNotice = document.getElementById('modalImageNotice');
         const modalImageThought = document.getElementById('modalImageThought');
+        const modalScroll = document.getElementById('modalScroll');
+        const scrollHint = document.getElementById('scrollHint');
+        const scrollHintBtn = document.getElementById('scrollHintBtn');
+
+        // Show the "Read the story" hint only while the story text is out of view
+        function updateScrollHint() {
+            const storyHidden = modalStory.getBoundingClientRect().top > modalScroll.getBoundingClientRect().bottom - 60;
+            const show = storyHidden && modalScroll.scrollTop < 20;
+            scrollHint.classList.toggle('opacity-0', !show);
+            scrollHintBtn.classList.toggle('pointer-events-auto', show);
+            scrollHintBtn.classList.toggle('pointer-events-none', !show);
+        }
+        modalScroll.addEventListener('scroll', updateScrollHint, { passive: true });
+        modalImage.addEventListener('load', updateScrollHint);
+        window.addEventListener('resize', updateScrollHint);
+        scrollHintBtn.addEventListener('click', () => {
+            const offset = modalStory.getBoundingClientRect().top - modalScroll.getBoundingClientRect().top;
+            modalScroll.scrollTo({ top: modalScroll.scrollTop + offset - 16, behavior: 'smooth' });
+        });
         let modalShowCount = 0; // bumped on every showStoryModal, lets delayed gags detect navigation
 
         // Locked Modal Elements
@@ -1069,6 +1095,9 @@
             modalCard.classList.add('scale-100');
 
             if (data.imageThought) showImageThought(data.imageThought);
+
+            modalScroll.scrollTop = 0;
+            requestAnimationFrame(updateScrollHint);
         }
 
         /**
